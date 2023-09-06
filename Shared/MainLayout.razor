@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider IsDarkMode="_isDarkMode"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <AppBar OnThemeChanged="@ChangeTheme" OnNavButtonClick="@OpenNavBar"/>
+    <NavBar @bind-IsOpen="_isNavBarOpen"/>
+    <MudMainContent Class="mt-5">
+        <MudContainer>
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code
+{
+    private bool _isDarkMode = false;
+    private bool _isNavBarOpen = false;
+    
+    private void ChangeTheme(bool isDark) => _isDarkMode = isDark;
+    private void OpenNavBar() => _isNavBarOpen = true;
+}

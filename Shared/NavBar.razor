@@ -1,0 +1,18 @@
+﻿<MudDrawer @bind-Open:get="IsOpen" @bind-Open:set="IsOpenChanged" Variant="@DrawerVariant.Temporary" Elevation="14">
+    <MudDrawerHeader>
+        RPG Game
+        <MudIcon Color="Color.Primary" Icon="@Icons.Material.Rounded.VideogameAsset"/>
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <MudNavLink Match="NavLinkMatch.All" Href="/" Icon="@Icons.Material.Outlined.Home">Home</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/Characters" Icon="@Icons.Material.Outlined.ChildCare">Characters</MudNavLink>
+    </MudNavMenu>
+</MudDrawer>
+
+@code
+{
+    [Parameter]
+    public bool IsOpen { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsOpenChanged { get; set; }
+}

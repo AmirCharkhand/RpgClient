@@ -1,0 +1,40 @@
+﻿@using RPGClient.Models.Character
+
+<MudTable T="GetCharacterDto" @ref="_table" ServerData="GetServerData" Hover="true" MultiSelection="true" FixedHeader="true" FixedFooter="true" Elevation="14">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Characters List</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="OnSearch" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Id">ID</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Name">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Health">Health</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Strength">Strength</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Attack">Attack</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Defence">Defence</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Type">Type</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Fights">Fights</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Victories">Victories</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="GetCharacterDto" SortLabel="Defeats">Defeats</MudTableSortLabel></MudTh>
+        <MudTh>Weapon</MudTh>
+        <MudTh>Skills</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Health">@context.Health</MudTd>
+        <MudTd DataLabel="Strength">@context.Strength</MudTd>
+        <MudTd DataLabel="Attack">@context.Attack</MudTd>
+        <MudTd DataLabel="Defence">@context.Defence</MudTd>
+        <MudTd DataLabel="Type">@context.Type</MudTd>
+        <MudTd DataLabel="Fights">@context.Fights</MudTd>
+        <MudTd DataLabel="Victories">@context.Victories</MudTd>
+        <MudTd DataLabel="Defeats">@context.Defeats</MudTd>
+        <MudTd DataLabel="Weapon">@context.Weapon!.Name</MudTd>
+        <MudTd DataLabel="Skills">Skills</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new []{3,6,18,32}" RowsPerPageString="Characters per Page"/>
+    </PagerContent>
+</MudTable>
