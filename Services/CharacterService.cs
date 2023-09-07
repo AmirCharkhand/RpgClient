@@ -20,22 +20,29 @@ public class CharacterService : ICharacterService
     
     public async Task<TableData<GetCharacterDto>> GetCharacters(TableMetaData tableMetaData)
     {
-        var uri = $"/API/Character?PropertyName={tableMetaData.SortingPropName}&Ascending={tableMetaData.Ascending}&PageIndex={tableMetaData.PageIndex}&PageSize={tableMetaData.PageSize}";
+        var uri =
+            $"/API/Character?PropertyName={tableMetaData.SortingPropName}&Ascending={tableMetaData.Ascending}&PageIndex={tableMetaData.PageIndex}&PageSize={tableMetaData.PageSize}";
+        return await GetTableDataFromServer(uri);
+    }
+    
+    public async Task<TableData<GetCharacterDto>> SearchCharacters(TableMetaData tableMetaData, string searchText)
+    {
+        var uri =
+            $"/API/Character/{searchText}?PageIndex={tableMetaData.PageIndex}&PageSize={tableMetaData.PageSize}&PropertyName={tableMetaData.SortingPropName}&Ascending={tableMetaData.Ascending}";
+        return await GetTableDataFromServer(uri);
+    }
+    
+    private async Task<TableData<GetCharacterDto>> GetTableDataFromServer(string uri)
+    {
         var req = await new HttpRequestMessage().NewGetRequestMessageWithBearer(uri, _sessionStorageService);
         var res = await _httpClient.SendAsync(req);
         res.EnsureSuccessStatusCode();
         var characters = await res.Content.ReadFromJsonAsync<List<GetCharacterDto>>();
         var totalItems = int.Parse(res.Headers.GetValues("X_TotalCount").First());
-        var result = new TableData<GetCharacterDto>
+        return new TableData<GetCharacterDto>
         {
             Items = characters,
             TotalItems = totalItems
         };
-        return result;
-    }
-
-    public Task<TableData<GetCharacterDto>> SearchCharacters(TableMetaData tableMetaData, string searchText)
-    {
-        throw new NotImplementedException();
     }
 }

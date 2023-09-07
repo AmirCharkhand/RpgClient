@@ -10,7 +10,7 @@ namespace RPGClient.Components.Character;
 public partial class CharacterList
 {
     private string _searchText = string.Empty;
-    private MudTable<GetCharacterDto> _table;
+    private MudTable<GetCharacterDto> _table = null!;
 
     [Inject]
     private ICharacterService Service { get; set; } = null!;
@@ -24,7 +24,11 @@ public partial class CharacterList
             PageIndex = state.Page,
             PageSize = state.PageSize
         };
-        return await Service.GetCharacters(tableMeta);
+        
+        if (string.IsNullOrEmpty(_searchText))
+            return await Service.GetCharacters(tableMeta);
+        
+        return await Service.SearchCharacters(tableMeta, _searchText);
     }
 
     private async Task OnSearch(string searchText)
