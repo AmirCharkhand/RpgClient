@@ -1,6 +1,6 @@
 ﻿@using RPGClient.Models.Character
 
-<MudTable T="GetCharacterDto" @ref="_table" ServerData="GetServerData" Hover="true" MultiSelection="true" FixedHeader="true" FixedFooter="true" Elevation="14">
+<MudTable T="GetCharacterDto" @ref="_table" ServerData="GetServerData" Hover="true" MultiSelection="true" FixedHeader="true" FixedFooter="true" Elevation="14" SelectedItemsChanged="OnSelectedItemsChanged">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Characters List</MudText>
         <MudSpacer />

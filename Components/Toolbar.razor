@@ -1,9 +1,5 @@
 ﻿<MudButtonGroup Color="Color.Primary" Variant="Variant.Text">
-    <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success"/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Warning"/>
-    <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Add" Color="Color.Success" Title="Add A New Item to List" Disabled="_addBtnDisabled"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Edit" Color="Color.Warning" Title="Edit Selected Item" Disabled="_editBtnDisabled"/>
+    <MudIconButton Icon="@Icons.Material.Sharp.Delete" Color="Color.Error" Title="Remove Selected Item(s)" Disabled="_removeBtnDisabled"/>
 </MudButtonGroup>
-
-@code {
-    
-}

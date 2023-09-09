@@ -2,10 +2,16 @@
 @page "/Characters"
 
 <MudContainer Fixed="true" Class="d-flex justify-center mb-2">
-    <Toolbar/>
+    <Toolbar @ref="_toolbar"/>
 </MudContainer>
-<CharacterList/>
+<CharacterList SelectedRowsCallback="OnTableSelectedRowsChanged"/>
 
-@code {
+@code
+{
+    private Toolbar _toolbar = null!;
     
+    private void OnTableSelectedRowsChanged(int itemsCount)
+    {
+        _toolbar.ChangeButtonsState(itemsCount);
+    }
 }
