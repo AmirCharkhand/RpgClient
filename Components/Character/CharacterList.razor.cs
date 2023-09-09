@@ -12,9 +12,10 @@ public partial class CharacterList
     private string _searchText = string.Empty;
     private MudTable<GetCharacterDto> _table = null!;
 
-    [Inject]
-    private ICharacterService Service { get; set; } = null!;
-    
+    [Inject] private ICharacterService Service { get; set; } = null!;
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Parameter] public EventCallback<int> SelectedRowsCallback { get; set; }
+
     private async Task<TableData<GetCharacterDto>> GetServerData(TableState state)
     {
         var tableMeta = new TableMetaData()
@@ -25,15 +26,32 @@ public partial class CharacterList
             PageSize = state.PageSize
         };
         
-        if (string.IsNullOrEmpty(_searchText))
-            return await Service.GetCharacters(tableMeta);
-        
-        return await Service.SearchCharacters(tableMeta, _searchText);
+        TableData<GetCharacterDto> tableData;
+        try
+        {
+            if (string.IsNullOrEmpty(_searchText))
+                tableData = await Service.GetCharacters(tableMeta);
+            else
+                tableData = await Service.SearchCharacters(tableMeta, _searchText);
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+            tableData = new TableData<GetCharacterDto>() { TotalItems = 0 };
+        }
+
+        return tableData;
     }
 
     private async Task OnSearch(string searchText)
     {
         _searchText = searchText;
         await _table.ReloadServerData();
+    }
+
+    private async void OnSelectedItemsChanged(HashSet<GetCharacterDto> selectedItems)
+    {
+        var itemsCount = selectedItems.Count;
+        await SelectedRowsCallback.InvokeAsync(itemsCount);
     }
 }
