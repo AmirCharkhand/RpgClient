@@ -12,6 +12,7 @@ public partial class Login
     private InputType _passwordInput = InputType.Password;
     private string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
     private bool _isLoginDisabled = false;
+    private bool _isProgressDisabled = true;
 
     [Inject]
     private ILoginService Service { get; set; } = null!;
@@ -39,9 +40,11 @@ public partial class Login
 
     private async Task LoginUser()
     {
+        _isLoginDisabled = true;
+        _isProgressDisabled = false;
+        
         try
         {
-            _isLoginDisabled = true;
             var userLogin = new UserLoginDto() { UserName = _userName, Password = _password };
             await Service.Login(userLogin);
             Snackbar.Add("Successfully Logged in", Severity.Success);
@@ -52,6 +55,7 @@ public partial class Login
         }
         
         _isLoginDisabled = false;
+        _isProgressDisabled = true;
         Instance.Close();
     }
 
