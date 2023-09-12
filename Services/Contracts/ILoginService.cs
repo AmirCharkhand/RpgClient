@@ -4,5 +4,5 @@ namespace RPGClient.Services.Contracts;
 
 public interface ILoginService
 {
-    Task<string> Login(UserLoginDto userLogin);
+    Task Login(UserLoginDto userLogin);
 }

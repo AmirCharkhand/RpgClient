@@ -43,13 +43,12 @@ public partial class Login
         {
             _isLoginDisabled = true;
             var userLogin = new UserLoginDto() { UserName = _userName, Password = _password };
-            var jwt = await Service.Login(userLogin);
-            await SessionStorage.AddItem("UserToken", jwt);
+            await Service.Login(userLogin);
             Snackbar.Add("Successfully Logged in", Severity.Success);
         }
         catch (Exception e)
         {
-            Snackbar.Add(e.Message, Severity.Warning);
+            Snackbar.Add(e.Message, Severity.Error);
         }
         
         _isLoginDisabled = false;

@@ -24,7 +24,10 @@ public partial class AppBar
     {
         var options = new DialogOptions()
         {
-            CloseOnEscapeKey = true, Position = DialogPosition.Center, MaxWidth = MaxWidth.Large
+            CloseOnEscapeKey = true, 
+            Position = DialogPosition.Center, 
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true
         };
         DialogService.Show<Login>("Login", options);
     }
