@@ -1,17 +1,30 @@
 ﻿@using RPGClient.Components.Character
+@inject IDialogService DialogService
 @page "/Characters"
 
 <MudContainer Fixed="true" Class="d-flex justify-center mb-2">
-    <Toolbar @ref="_toolbar"/>
+    <Toolbar @ref="_toolbar" OnAddBtnClicked="AddNewCharacter"/>
 </MudContainer>
-<CharacterList SelectedRowsCallback="OnTableSelectedRowsChanged"/>
+<CharacterList @ref="_characterList" OnSelectedRowsChanged="ChangeToolbarState"/>
 
 @code
 {
     private Toolbar _toolbar = null!;
+    private CharacterList _characterList = null!;
     
-    private void OnTableSelectedRowsChanged(int itemsCount)
+    private void ChangeToolbarState(int itemsCount) => _toolbar.ChangeButtonsState(itemsCount);
+    
+    private async Task AddNewCharacter()
     {
-        _toolbar.ChangeButtonsState(itemsCount);
+        var options = new DialogOptions()
+        {
+            CloseOnEscapeKey = true,
+            Position = DialogPosition.Center,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        };
+        var dialog = await DialogService.ShowAsync<AddCharacter>("New Character", options);
+        var result = await dialog.Result;
+        if (!result.Canceled) await _characterList.ReloadTable();
     }
 }

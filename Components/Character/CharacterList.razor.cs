@@ -14,7 +14,7 @@ public partial class CharacterList
 
     [Inject] private ICharacterService Service { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
-    [Parameter] public EventCallback<int> SelectedRowsCallback { get; set; }
+    [Parameter] public EventCallback<int> OnSelectedRowsChanged { get; set; }
 
     private async Task<TableData<GetCharacterDto>> GetServerData(TableState state)
     {
@@ -52,6 +52,8 @@ public partial class CharacterList
     private async void OnSelectedItemsChanged(HashSet<GetCharacterDto> selectedItems)
     {
         var itemsCount = selectedItems.Count;
-        await SelectedRowsCallback.InvokeAsync(itemsCount);
+        await OnSelectedRowsChanged.InvokeAsync(itemsCount);
     }
+
+    public async Task ReloadTable() => await _table.ReloadServerData();
 }

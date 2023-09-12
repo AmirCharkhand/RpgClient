@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using MudBlazor;
 using RPGClient.Extensions;
 using RPGClient.Models;
@@ -31,7 +32,15 @@ public class CharacterService : ICharacterService
             $"/API/Character/{searchText}?PageIndex={tableMetaData.PageIndex}&PageSize={tableMetaData.PageSize}&PropertyName={tableMetaData.SortingPropName}&Ascending={tableMetaData.Ascending}";
         return await GetTableDataFromServer(uri);
     }
-    
+
+    public async Task AddCharacter(AddCharacterDto characterDto)
+    {
+        var bearer = await _sessionStorageService.GetItem<string>("UserToken");
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", bearer);
+        var res = await _httpClient.PostAsJsonAsync("/API/Character", characterDto);
+        res.EnsureSuccessStatusCode();
+    }
+
     private async Task<TableData<GetCharacterDto>> GetTableDataFromServer(string uri)
     {
         var req = await new HttpRequestMessage().NewGetRequestMessageWithBearer(uri, _sessionStorageService);

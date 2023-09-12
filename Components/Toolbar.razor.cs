@@ -1,10 +1,16 @@
-﻿namespace RPGClient.Components;
+﻿using Microsoft.AspNetCore.Components;
+
+namespace RPGClient.Components;
 
 public partial class Toolbar
 {
     private bool _addBtnDisabled = false;
     private bool _editBtnDisabled = true;
     private bool _removeBtnDisabled = true;
+    
+    [Parameter] public EventCallback OnAddBtnClicked { get; set; }
+    
+    private async Task OnAddButtonClicked() => await OnAddBtnClicked.InvokeAsync();
 
     public void ChangeButtonsState(int tablesSelectedRowsCount)
     {
