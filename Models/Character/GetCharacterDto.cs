@@ -6,7 +6,7 @@ namespace RPGClient.Models.Character;
 public class GetCharacterDto
 {
     public int Id { get; set; }
-    public string Name { get; set; } = "Amiroo";
+    public string Name { get; set; } = string.Empty;
     public float Health { get; set; }
     public float Strength { get; set; }
     public float Attack { get; set; }

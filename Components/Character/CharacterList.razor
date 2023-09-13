@@ -31,7 +31,16 @@
         <MudTd DataLabel="Fights">@context.Fights</MudTd>
         <MudTd DataLabel="Victories">@context.Victories</MudTd>
         <MudTd DataLabel="Defeats">@context.Defeats</MudTd>
-        <MudTd DataLabel="Weapon">@context.Weapon!.Name</MudTd>
+        <MudTd DataLabel="Weapon">
+            @if (context.Weapon != null)
+            {
+                @context.Weapon.Name
+            }
+            else
+            {
+                @("No Weapon")
+            }
+        </MudTd>
         <MudTd DataLabel="Skills">Skills</MudTd>
     </RowTemplate>
     <PagerContent>
