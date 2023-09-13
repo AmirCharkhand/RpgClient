@@ -9,8 +9,12 @@ public partial class Toolbar
     private bool _removeBtnDisabled = true;
     
     [Parameter] public EventCallback OnAddBtnClicked { get; set; }
-    
+    [Parameter] public EventCallback OnEditBtnClicked { get; set; }
+    [Parameter] public EventCallback OnRemoveBtnClicked { get; set; }
+
     private async Task OnAddButtonClicked() => await OnAddBtnClicked.InvokeAsync();
+    private async Task OnEditButtonClicked() => await OnEditBtnClicked.InvokeAsync();
+    private async Task OnRemoveButtonClicked() => await OnRemoveBtnClicked.InvokeAsync();
 
     public void ChangeButtonsState(int tablesSelectedRowsCount)
     {

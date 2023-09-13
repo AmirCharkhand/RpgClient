@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using RPGClient.Models.Character
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Rounded.Edit" Class="mr-3 mb-n1"/>
+            Edit Character
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <EditForm EditContext="_context">
+            <DataAnnotationsValidator/>
+            <MudTextField T="string" Variant="Variant.Text" Label="Name" HelperText="Enter A Name for your Character" @bind-Value="Model.Name" For="@(() => Model.Name)"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Health" HelperText="Enter Characters Health value" @bind-Value="Model.Health" For="@(() => Model.Health)"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Strength" HelperText="Enter Characters Strength value" @bind-Value="Model.Strength" For="@(() => Model.Strength)"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Attack" HelperText="Enter Characters Attack power value" @bind-Value="Model.Attack" For="@(() => Model.Attack)"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Defence" HelperText="Enter Characters Defence power value" @bind-Value="Model.Defence" For="@(() => Model.Defence)"/>
+            <MudSelect T="CharacterType" Variant="Variant.Text" Label="Type" HelperText="Choose Character's type" @bind-Value="Model.Type" For="@(() => Model.Type)">
+                @foreach (CharacterType item in Enum.GetValues(typeof(CharacterType)))
+                {
+                    <MudSelectItem T="CharacterType" Value="item">@item</MudSelectItem>
+                }
+            </MudSelect>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudFab Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" Label="Submit" OnClick="Submit"/>
+        <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.Clear" OnClick="Cancel"/>
+    </DialogActions>
+</MudDialog>

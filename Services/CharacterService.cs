@@ -35,6 +35,13 @@ public class CharacterService : ICharacterService
         res.EnsureSuccessStatusCode();
     }
 
+    public async Task UpdateCharacter(UpdateCharacterDto characterDto, int characterId)
+    {
+        var uri = $"/API/Character/{characterId}";
+        var res = await _httpClient.PutAsJsonAsync(uri, characterDto);
+        res.EnsureSuccessStatusCode();
+    }
+
     private async Task<TableData<GetCharacterDto>> GetTableDataFromServer(string uri)
     {
         var req = new HttpRequestMessage(HttpMethod.Get, uri);

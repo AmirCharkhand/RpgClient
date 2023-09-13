@@ -1,29 +1,59 @@
 ﻿@using RPGClient.Components.Character
+@using RPGClient.Models.Character
 @inject IDialogService DialogService
 @page "/Characters"
 
 <MudContainer Fixed="true" Class="d-flex justify-center mb-2">
-    <Toolbar @ref="_toolbar" OnAddBtnClicked="AddNewCharacter"/>
+    <Toolbar @ref="_toolbar" OnAddBtnClicked="AddNewCharacter" OnEditBtnClicked="UpdateCharacter"/>
 </MudContainer>
-<CharacterList @ref="_characterList" OnSelectedRowsChanged="ChangeToolbarState"/>
+<CharacterList @ref="_characterList" OnSelectedRowsChanged="ChangeSelectedCharactersArray"/>
 
 @code
 {
     private Toolbar _toolbar = null!;
     private CharacterList _characterList = null!;
+    private GetCharacterDto[]? _selectedCharacters;
+    private readonly DialogOptions _options = new()
+    {
+        CloseOnEscapeKey = true,
+        Position = DialogPosition.Center,
+        MaxWidth = MaxWidth.Medium,
+        FullWidth = true
+    };
+
+    private void ChangeSelectedCharactersArray(GetCharacterDto[] selectedCharacters)
+    {
+        _selectedCharacters = selectedCharacters;
+        ChangeToolbarState(_selectedCharacters.Length);
+    }
     
     private void ChangeToolbarState(int itemsCount) => _toolbar.ChangeButtonsState(itemsCount);
     
     private async Task AddNewCharacter()
     {
-        var options = new DialogOptions()
+        var dialog = await DialogService.ShowAsync<AddCharacter>("New Character", _options);
+        var result = await dialog.Result;
+        if (!result.Canceled) await _characterList.ReloadTable();
+    }
+
+    private async Task UpdateCharacter()
+    {
+        var selectedCharacter = (_selectedCharacters ?? throw new InvalidOperationException()).First();
+        var updateDto = new UpdateCharacterDto()
         {
-            CloseOnEscapeKey = true,
-            Position = DialogPosition.Center,
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true
+            Name = selectedCharacter.Name,
+            Attack = selectedCharacter.Attack,
+            Defence = selectedCharacter.Defence,
+            Health = selectedCharacter.Health,
+            Strength = selectedCharacter.Strength,
+            Type = selectedCharacter.Type
         };
-        var dialog = await DialogService.ShowAsync<AddCharacter>("New Character", options);
+        var dialogParams = new DialogParameters
+        {
+            { "CharacterId", selectedCharacter.Id },
+            { "Model", updateDto }
+        };
+        var dialog = await DialogService.ShowAsync<UpdateCharacter>("UpdateCharacter", dialogParams, _options);
         var result = await dialog.Result;
         if (!result.Canceled) await _characterList.ReloadTable();
     }
