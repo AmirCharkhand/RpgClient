@@ -1,0 +1,39 @@
+﻿<MudDialog DisableSidePadding="true">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Color="Color.Secondary">
+            <MudIcon Icon="@Icons.Material.Rounded.DeleteForever" Size="Size.Large" Class="mr-3 mb-n1"/>
+            Removing Characters !
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudContainer Style="max-height: 600px; overflow-y: scroll">
+            @if (_isDeleteDisabled)
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Medium"/>
+            }
+
+            <MudText Typo="Typo.subtitle1">
+                <MudIcon Icon="@Icons.Material.Outlined.Dangerous" Color="Color.Secondary"/>
+                Are you Sure? you are about to Delete the folowing Characters forever!
+            </MudText>
+            @foreach (var character in Characters)
+            {
+                <MudCard Elevation="14" Outlined="true" Class="ma-3">
+                    <MudCardHeader>
+                        <MudText Typo="Typo.subtitle1">@character.Name</MudText>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body1">Attack: @character.Attack</MudText>
+                        <MudText Typo="Typo.body1">Defence: @character.Defence</MudText>
+                        <MudText Typo="Typo.body1">Strength: @character.Strength</MudText>
+                        <MudText Typo="Typo.body1">Type: @character.Type</MudText>
+                    </MudCardContent>
+                </MudCard>
+            }
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.DeleteForever" Label="Delete Characters!" OnClick="DeleteCharacters" Disabled="_isDeleteDisabled"/>
+        <MudFab Color="Color.Primary" Label="Cancel" OnClick="Cancel"/>
+    </DialogActions>
+</MudDialog>

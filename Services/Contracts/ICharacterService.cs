@@ -10,4 +10,5 @@ public interface ICharacterService
     Task<TableData<GetCharacterDto>> SearchCharacters(TableMetaData tableMetaData, string searchText);
     Task AddCharacter(AddCharacterDto characterDto);
     Task UpdateCharacter(UpdateCharacterDto characterDto, int characterId);
+    Task DeleteCharacters(List<int> ids);
 }

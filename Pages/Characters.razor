@@ -4,7 +4,7 @@
 @page "/Characters"
 
 <MudContainer Fixed="true" Class="d-flex justify-center mb-2">
-    <Toolbar @ref="_toolbar" OnAddBtnClicked="AddNewCharacter" OnEditBtnClicked="UpdateCharacter"/>
+    <Toolbar @ref="_toolbar" OnAddBtnClicked="AddNewCharacter" OnEditBtnClicked="UpdateCharacter" OnRemoveBtnClicked="DeleteCharacters"/>
 </MudContainer>
 <CharacterList @ref="_characterList" OnSelectedRowsChanged="ChangeSelectedCharactersArray"/>
 
@@ -17,7 +17,7 @@
     {
         CloseOnEscapeKey = true,
         Position = DialogPosition.Center,
-        MaxWidth = MaxWidth.Medium,
+        MaxWidth = MaxWidth.Small,
         FullWidth = true
     };
 
@@ -54,6 +54,15 @@
             { "Model", updateDto }
         };
         var dialog = await DialogService.ShowAsync<UpdateCharacter>("UpdateCharacter", dialogParams, _options);
+        var result = await dialog.Result;
+        if (!result.Canceled) await _characterList.ReloadTable();
+    }
+
+    private async Task DeleteCharacters()
+    {
+        if (_selectedCharacters == null) throw new InvalidOperationException();
+        var dialogParams = new DialogParameters { { "Characters", _selectedCharacters } };
+        var dialog = await DialogService.ShowAsync<RemoveCharacter>("RemoveCharacters", dialogParams, _options);
         var result = await dialog.Result;
         if (!result.Canceled) await _characterList.ReloadTable();
     }

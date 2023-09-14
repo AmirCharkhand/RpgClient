@@ -42,6 +42,12 @@ public class CharacterService : ICharacterService
         res.EnsureSuccessStatusCode();
     }
 
+    public async Task DeleteCharacters(List<int> ids)
+    {
+        var res = await _httpClient.PostAsJsonAsync("/API/Character/GroupDelete", ids);
+        res.EnsureSuccessStatusCode();
+    }
+
     private async Task<TableData<GetCharacterDto>> GetTableDataFromServer(string uri)
     {
         var req = new HttpRequestMessage(HttpMethod.Get, uri);
