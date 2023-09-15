@@ -9,6 +9,11 @@
         </MudText>
     </TitleContent>
     <DialogContent>
+        @if (_isSubmitDisabled)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Medium"/>
+        }
+
         <EditForm EditContext="_context">
             <DataAnnotationsValidator/>
             <MudTextField T="string" Variant="Variant.Text" Label="Name" HelperText="Enter A Name for your Character" @bind-Value="_model.Name" For="@(() => _model.Name)"/>

@@ -15,6 +15,7 @@ public partial class UpdateCharacter
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
     private EditContext _context = null!;
+    private bool _isSubmitDisabled = false;
 
     protected override void OnInitialized()
     {
@@ -31,6 +32,7 @@ public partial class UpdateCharacter
 
         try
         {
+            _isSubmitDisabled = true;
             await Service.UpdateCharacter(Model, CharacterId);
             Snackbar.Add("Character Successfully added", Severity.Success);
             Instance.Close();
@@ -38,6 +40,7 @@ public partial class UpdateCharacter
         catch (Exception e)
         {
             Snackbar.Add(e.Message, Severity.Error);
+            _isSubmitDisabled = false;
         }
     }
 }

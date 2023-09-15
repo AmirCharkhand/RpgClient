@@ -14,6 +14,7 @@ public partial class AddCharacter
 
     private readonly AddCharacterDto _model = new AddCharacterDto();
     private EditContext _context = null!;
+    private bool _isSubmitDisabled = false;
 
     protected override void OnInitialized()
     {
@@ -30,6 +31,7 @@ public partial class AddCharacter
 
         try
         {
+            _isSubmitDisabled = true;
             await Service.AddCharacter(_model);
             Snackbar.Add("Character Successfully added", Severity.Success);
             Instance.Close();
@@ -37,6 +39,7 @@ public partial class AddCharacter
         catch (Exception e)
         {
             Snackbar.Add(e.Message, Severity.Error);
+            _isSubmitDisabled = false;
         }
     }
 }
