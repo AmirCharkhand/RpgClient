@@ -9,42 +9,36 @@ namespace RPGClient.Services;
 public class CharacterService : ICharacterService
 {
     private readonly HttpClient _httpClient;
+    private readonly IUriBuilderService _uriBuilder;
 
-    public CharacterService(HttpClient httpClient, ISessionStorageService sessionStorageService)
+    public CharacterService(HttpClient httpClient, IUriBuilderService uriBuilder)
     {
         _httpClient = httpClient;
+        _uriBuilder = uriBuilder;
     }
     
-    public async Task<TableData<GetCharacterDto>> GetCharacters(TableMetaData tableMetaData)
+    public async Task<TableData<GetCharacterDto>> GetCharacters(PagedListParameters parameters)
     {
-        var uri =
-            $"/API/Character?PropertyName={tableMetaData.SortingPropName}&Ascending={tableMetaData.Ascending}&PageIndex={tableMetaData.PageIndex}&PageSize={tableMetaData.PageSize}";
+        var uri = _uriBuilder.Character.GetUriForPagedCharacters(parameters);
         return await GetTableDataFromServer(uri);
     }
     
-    public async Task<TableData<GetCharacterDto>> SearchCharacters(TableMetaData tableMetaData, string searchText)
-    {
-        var uri =
-            $"/API/Character/{searchText}?PageIndex={tableMetaData.PageIndex}&PageSize={tableMetaData.PageSize}&PropertyName={tableMetaData.SortingPropName}&Ascending={tableMetaData.Ascending}";
-        return await GetTableDataFromServer(uri);
-    }
-
     public async Task AddCharacter(AddCharacterDto characterDto)
     {
-        var res = await _httpClient.PostAsJsonAsync("/API/Character", characterDto);
+        var res = await _httpClient.PostAsJsonAsync(_uriBuilder.Character.Character, characterDto);
         res.EnsureSuccessStatusCode();
     }
 
     public async Task UpdateCharacter(UpdateCharacterDto characterDto, int characterId)
     {
-        var uri = $"/API/Character/{characterId}";
+        var uri = _uriBuilder.Character.GetUriForUpdate(characterId);
         var res = await _httpClient.PutAsJsonAsync(uri, characterDto);
         res.EnsureSuccessStatusCode();
     }
 
     public async Task DeleteCharacters(List<int> ids)
     {
-        var res = await _httpClient.PostAsJsonAsync("/API/Character/GroupDelete", ids);
+        var res = await _httpClient.PostAsJsonAsync(_uriBuilder.Character.GetUriForGroupDelete, ids);
         res.EnsureSuccessStatusCode();
     }
 

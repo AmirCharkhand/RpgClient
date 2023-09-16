@@ -18,21 +18,19 @@ public partial class CharacterList
 
     private async Task<TableData<GetCharacterDto>> GetServerData(TableState state)
     {
-        var tableMeta = new TableMetaData()
+        var pagedListParameters = new PagedListParameters()
         {
-            SortingPropName = string.IsNullOrEmpty(state.SortLabel) ? "Id" : state.SortLabel,
+            SortingPropName = state.SortLabel,
+            SearchText = _searchText,
             Ascending = state.SortDirection != SortDirection.Descending,
-            PageIndex = state.Page,
+            PageIndex = state.Page + 1,
             PageSize = state.PageSize
         };
         
         TableData<GetCharacterDto> tableData;
         try
         {
-            if (string.IsNullOrEmpty(_searchText))
-                tableData = await Service.GetCharacters(tableMeta);
-            else
-                tableData = await Service.SearchCharacters(tableMeta, _searchText);
+            tableData = await Service.GetCharacters(pagedListParameters);
         }
         catch (Exception e)
         {
