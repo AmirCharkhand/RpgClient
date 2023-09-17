@@ -34,7 +34,7 @@ public partial class UpdateCharacter
         {
             _isSubmitDisabled = true;
             await Service.UpdateCharacter(Model, CharacterId);
-            Snackbar.Add("Character Successfully added", Severity.Success);
+            Snackbar.Add("Character Successfully Updated", Severity.Success);
             Instance.Close();
         }
         catch (Exception e)

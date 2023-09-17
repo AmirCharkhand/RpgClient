@@ -1,4 +1,5 @@
 ﻿@using RPGClient.Components.Character
+@using RPGClient.Extensions
 @using RPGClient.Models.Character
 @inject IDialogService DialogService
 @page "/Characters"
@@ -31,9 +32,7 @@
     
     private async Task AddNewCharacter()
     {
-        var dialog = await DialogService.ShowAsync<AddCharacter>("New Character", _options);
-        var result = await dialog.Result;
-        if (!result.Canceled) await _characterList.ReloadTable();
+        await DialogService.ShowAsync<AddCharacter>("New Character", _options, () => _characterList.ReloadTable());
     }
 
     private async Task UpdateCharacter()
@@ -53,17 +52,13 @@
             { "CharacterId", selectedCharacter.Id },
             { "Model", updateDto }
         };
-        var dialog = await DialogService.ShowAsync<UpdateCharacter>("UpdateCharacter", dialogParams, _options);
-        var result = await dialog.Result;
-        if (!result.Canceled) await _characterList.ReloadTable();
+        await DialogService.ShowAsync<UpdateCharacter>("Update Character", dialogParams, _options, () => _characterList.ReloadTable());
     }
 
     private async Task DeleteCharacters()
     {
         if (_selectedCharacters == null) throw new InvalidOperationException();
         var dialogParams = new DialogParameters { { "Characters", _selectedCharacters } };
-        var dialog = await DialogService.ShowAsync<RemoveCharacter>("RemoveCharacters", dialogParams, _options);
-        var result = await dialog.Result;
-        if (!result.Canceled) await _characterList.ReloadTable();
+        await DialogService.ShowAsync<RemoveCharacter>("Remove", dialogParams, _options, () => _characterList.ReloadTable());
     }
 }
