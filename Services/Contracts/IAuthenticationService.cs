@@ -2,7 +2,8 @@
 
 namespace RPGClient.Services.Contracts;
 
-public interface ILoginService
+public interface IAuthenticationService
 {
     Task Login(UserLoginDto userLogin);
+    Task Authenticate();
 }

@@ -20,6 +20,6 @@ builder.Services.AddMudServices(config =>
 });
 builder.Services.AddScoped<ISessionStorageService, SessionStorageService>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
-builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 await builder.Build().RunAsync();

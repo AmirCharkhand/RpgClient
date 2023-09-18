@@ -15,7 +15,7 @@ public partial class Login
     private bool _isProgressDisabled = true;
 
     [Inject]
-    private ILoginService Service { get; set; } = null!;
+    private IAuthenticationService Service { get; set; } = null!;
     [Inject]
     private ISessionStorageService SessionStorage { get; set; } = null!;
     [Inject]
