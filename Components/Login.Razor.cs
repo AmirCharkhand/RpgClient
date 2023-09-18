@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using RPGClient.Models;
 using RPGClient.Services.Contracts;
@@ -57,6 +58,11 @@ public partial class Login
         _isLoginDisabled = false;
         _isProgressDisabled = true;
         Instance.Close();
+    }
+
+    private async Task OnEnter(KeyboardEventArgs e)
+    {
+        if (e.Code.Equals("Enter")) await LoginUser();
     }
 
     private void CloseDialog() => Instance.Cancel();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using RPGClient.Models.Character;
 using RPGClient.Services.Contracts;
@@ -41,5 +42,10 @@ public partial class AddCharacter
             Snackbar.Add(e.Message, Severity.Error);
             _isSubmitDisabled = false;
         }
+    }
+
+    private async Task OnEnter(KeyboardEventArgs e)
+    {
+        if (e.Code.Equals("Enter")) await Submit();
     }
 }
