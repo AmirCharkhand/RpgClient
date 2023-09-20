@@ -16,11 +16,11 @@
 
         <EditForm EditContext="_context">
             <DataAnnotationsValidator/>
-            <MudTextField T="string" Variant="Variant.Text" Label="Name" HelperText="Enter A Name for your Character" @bind-Value="_model.Name" For="@(() => _model.Name)" OnKeyDown="OnEnter"/>
-            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Health" HelperText="Enter Characters Health value" @bind-Value="_model.Health" For="@(() => _model.Health)" OnKeyDown="OnEnter"/>
-            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Strength" HelperText="Enter Characters Strength value" @bind-Value="_model.Strength" For="@(() => _model.Strength)" OnKeyDown="OnEnter"/>
-            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Attack" HelperText="Enter Characters Attack power value" @bind-Value="_model.Attack" For="@(() => _model.Attack)" OnKeyDown="OnEnter"/>
-            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Defence" HelperText="Enter Characters Defence power value" @bind-Value="_model.Defence" For="@(() => _model.Defence)" OnKeyDown="OnEnter"/>
+            <MudTextField T="string" Variant="Variant.Text" Label="Name" HelperText="Enter A Name for your Character" @bind-Value="_model.Name" For="@(() => _model.Name)" OnKeyDown="OnEnter" Immediate="true"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Health" HelperText="Enter Characters Health value" @bind-Value="_model.Health" For="@(() => _model.Health)" OnKeyDown="OnEnter" Immediate="true"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Strength" HelperText="Enter Characters Strength value" @bind-Value="_model.Strength" For="@(() => _model.Strength)" OnKeyDown="OnEnter" Immediate="true"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Attack" HelperText="Enter Characters Attack power value" @bind-Value="_model.Attack" For="@(() => _model.Attack)" OnKeyDown="OnEnter" Immediate="true"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Defence" HelperText="Enter Characters Defence power value" @bind-Value="_model.Defence" For="@(() => _model.Defence)" OnKeyDown="OnEnter" Immediate="true"/>
             <MudSelect T="CharacterType" Variant="Variant.Text" Label="Type" HelperText="Choose Character's type" @bind-Value="_model.Type" For="@(() => _model.Type)">
                 @foreach (CharacterType item in Enum.GetValues(typeof(CharacterType)))
                 {
