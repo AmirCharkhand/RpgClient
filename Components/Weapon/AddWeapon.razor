@@ -1,0 +1,24 @@
+﻿<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6" Color="Color.Tertiary">
+            <MudIcon Icon="@Icons.Material.Rounded.FiberNew" Class="mr-3 mb-n1"/>
+            Create New Character
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (_isSubmitDisabled)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Medium"/>
+        }
+
+        <EditForm EditContext="_context">
+            <DataAnnotationsValidator/>
+            <MudTextField T="string" Variant="Variant.Text" Label="Name" HelperText="Enter A Name for the Weapon" @bind-Value="_model.Name" For="@(() => _model.Name)"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Damage" HelperText="Enter Weapon's Damage" @bind-Value="_model.Damage" For="@(() => _model.Damage)" OnKeyDown="OnEnter" Immediate="true"/>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudFab Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" Label="Submit" Disabled="_isSubmitDisabled" OnClick="Submit"/>
+        <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.Clear" OnClick="Cancel"/>
+    </DialogActions>
+</MudDialog>

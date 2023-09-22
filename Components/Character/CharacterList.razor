@@ -1,6 +1,6 @@
 ﻿@using RPGClient.Models.Character
 
-<MudTable T="GetCharacterDto" @ref="_table" ServerData="GetServerData" Hover="true" MultiSelection="true" FixedHeader="true" FixedFooter="true" Elevation="14" SelectedItemsChanged="OnSelectedItemsChanged">
+<MudTable T="GetCharacterDto" @ref="_table" ServerData="GetServerData" Hover="true" Outlined="true" MultiSelection="true" FixedHeader="true" FixedFooter="true" Elevation="14" SelectedItemsChanged="OnSelectedItemsChanged">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Characters List</MudText>
         <MudSpacer />
@@ -40,7 +40,9 @@
             }
             else
             {
-                @("No Weapon")
+                <MudButton Variant="Variant.Text" Color="Color.Tertiary" OnClick="@(() => AddNewWeapon(context))">
+                    <MudText Align="Align.Center" Typo="Typo.body2">Add A Weapon</MudText>
+                </MudButton>
             }
         </MudTd>
         <MudTd DataLabel="Skills">Skills</MudTd>

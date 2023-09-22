@@ -2,6 +2,7 @@
 using MudBlazor;
 using MudBlazor.Extensions;
 using RPGClient.Components.Weapon;
+using RPGClient.Extensions;
 using RPGClient.Models;
 using RPGClient.Models.Character;
 using RPGClient.Models.Weapon;
@@ -13,6 +14,13 @@ public partial class CharacterList
 {
     private string _searchText = string.Empty;
     private MudTable<GetCharacterDto> _table = null!;
+    private DialogOptions _options = new ()
+    {
+        CloseButton = true,
+        CloseOnEscapeKey = true,
+        FullWidth = true,
+        MaxWidth = MaxWidth.ExtraSmall
+    };
 
     [Inject] private ICharacterService Service { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
@@ -60,19 +68,18 @@ public partial class CharacterList
 
     private async Task ShowWeaponDetails(GetCharacterDto character)
     {
-        var options = new DialogOptions()
-        {
-            CloseButton = true,
-            CloseOnEscapeKey = true,
-            FullWidth = true,
-            MaxWidth = MaxWidth.ExtraSmall
-        };
         var parameters = new DialogParameters()
         {
             { "CharacterName", character.Name },
             { "Weapon", character.Weapon }
         };
 
-        await DialogService.ShowAsync<ShowWeapon>("Weapon", parameters, options);
+        await DialogService.ShowAsync<ShowWeapon>("Weapon", parameters, _options);
+    }
+
+    private async Task AddNewWeapon(GetCharacterDto character)
+    {
+        var parameters = new DialogParameters() { { "CharacterId", character.Id } };
+        await DialogService.ShowAsync<AddWeapon>("Add new Weapon", parameters, _options, () => _table.ReloadServerData());
     }
 }
