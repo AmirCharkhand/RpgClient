@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using MudBlazor.Extensions;
+using RPGClient.Components.Weapon;
 using RPGClient.Models;
 using RPGClient.Models.Character;
 using RPGClient.Models.Weapon;
@@ -14,6 +16,7 @@ public partial class CharacterList
 
     [Inject] private ICharacterService Service { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private IDialogService DialogService { get; set; } = null!;
     [Parameter] public EventCallback<GetCharacterDto[]> OnSelectedRowsChanged { get; set; }
 
     private async Task<TableData<GetCharacterDto>> GetServerData(TableState state)
@@ -54,4 +57,22 @@ public partial class CharacterList
     }
 
     public async Task ReloadTable() => await _table.ReloadServerData();
+
+    private async Task ShowWeaponDetails(GetCharacterDto character)
+    {
+        var options = new DialogOptions()
+        {
+            CloseButton = true,
+            CloseOnEscapeKey = true,
+            FullWidth = true,
+            MaxWidth = MaxWidth.ExtraSmall
+        };
+        var parameters = new DialogParameters()
+        {
+            { "CharacterName", character.Name },
+            { "Weapon", character.Weapon }
+        };
+
+        await DialogService.ShowAsync<ShowWeapon>("Weapon", parameters, options);
+    }
 }

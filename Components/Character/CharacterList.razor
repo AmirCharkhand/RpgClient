@@ -34,7 +34,9 @@
         <MudTd DataLabel="Weapon">
             @if (context.Weapon != null)
             {
-                @context.Weapon.Name
+                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => ShowWeaponDetails(context))">
+                    <MudText Align="Align.Center" Typo="Typo.body2">@context.Weapon.Name</MudText>
+                </MudButton>
             }
             else
             {
