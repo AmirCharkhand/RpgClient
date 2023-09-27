@@ -45,7 +45,11 @@
                 </MudButton>
             }
         </MudTd>
-        <MudTd DataLabel="Skills">Skills</MudTd>
+        <MudTd DataLabel="Skills">
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => ShowSkills(context))">
+                <MudText Align="Align.Center" Typo="Typo.body2">Skills</MudText>
+            </MudButton>
+        </MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="@(new []{12,32,64})" RowsPerPageString="Characters per Page"/>

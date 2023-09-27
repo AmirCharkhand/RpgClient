@@ -5,15 +5,16 @@ namespace RPGClient.UriProviders;
 public class CharacterUriProvider
 {
     public string Character { get; }
-    public string GetUriForGroupDelete
-    {
-        get => Character + "/GroupDelete";
-    }
 
     public CharacterUriProvider()
     {
         Character = "API/Character";
     }
+    
+    public string GetUriForGroupDelete => Character + "/GroupDelete";
+
+    public string GetUriForAddSkill => Character + "/AddSkill";
+    public string GetUriForRemoveSkill => Character + "/RemoveSkill";
 
     public string GetUriForPagedCharacters(PagedListParameters parameters)
     {

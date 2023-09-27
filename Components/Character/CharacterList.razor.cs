@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions;
+using RPGClient.Components.Skills;
 using RPGClient.Components.Weapon;
 using RPGClient.Extensions;
 using RPGClient.Models;
@@ -16,10 +17,9 @@ public partial class CharacterList
     private MudTable<GetCharacterDto> _table = null!;
     private DialogOptions _options = new ()
     {
-        CloseButton = true,
         CloseOnEscapeKey = true,
         FullWidth = true,
-        MaxWidth = MaxWidth.ExtraSmall
+        MaxWidth = MaxWidth.Small
     };
 
     [Inject] private ICharacterService Service { get; set; } = null!;
@@ -81,5 +81,17 @@ public partial class CharacterList
     {
         var parameters = new DialogParameters() { { "CharacterId", character.Id } };
         await DialogService.ShowAsync<AddWeapon>("Add new Weapon", parameters, _options, () => _table.ReloadServerData());
+    }
+
+    private async Task ShowSkills(GetCharacterDto character)
+    {
+        var parameters = new DialogParameters()
+        {
+            { "CharacterName", character.Name },
+            { "OwnedSkills", character.Skills },
+            { "CharacterId", character.Id }
+        };
+
+        await DialogService.ShowAsync<CharacterSkills>("Skills", parameters, _options);
     }
 }

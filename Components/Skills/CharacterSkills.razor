@@ -1,0 +1,64 @@
+﻿<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5" Color="Color.Tertiary">
+            <MudIcon Icon="@Icons.Material.Rounded.Hive" Size="Size.Large" Class="mr-3 mb-n1"/>
+            Skills
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.h6" Color="Color.Info" Class="mb-3">@($"{CharacterName}'s Skills:")</MudText>
+
+        @if (_loadingCharacterSkills)
+        {
+            <MudProgressLinear Class="my-3" Color="Color.Primary" Indeterminate="true" Size="Size.Medium"/>
+        }
+
+        @if (OwnedSkills == null || OwnedSkills.Count == 0)
+        {
+            <MudText Typo="Typo.body1">@CharacterName Doesn't have any Skills yet.</MudText>
+        }
+        else
+        {
+            <MudContainer Class="d-flex flex-wrap gap-4 justify-center">
+                @foreach (var skill in OwnedSkills)
+                {
+                    <MudCard Elevation="14" Outlined="true" Style="width: 45%">
+                        <MudCardContent>
+                            <MudText Typo="Typo.body1">Skill Name: @skill.Name</MudText>
+                            <MudText Typo="Typo.body1">Skill Damage: @skill.Damage</MudText>
+                        </MudCardContent>
+                        <MudCardActions Class="justify-end">
+                            <MudChip Size="Size.Small" Variant="Variant.Text" Color="Color.Error" Disabled="_loadingCharacterSkills" OnClick="@(() => RemoveCharacterSkill(skill.Id))">Remove</MudChip>
+                        </MudCardActions>
+                    </MudCard>
+                }
+            </MudContainer>
+        }
+
+        <MudDivider DividerType="DividerType.Middle" Class="my-5"/>
+
+        <MudText Typo="Typo.h6" Color="Color.Info" Class="mb-3">All Aveailable Skills:</MudText>
+
+        @if (_loadingAllSkills)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Medium"/>
+        }
+        else
+        {
+            <MudContainer Class="d-flex flex-wrap gap-4 justify-center">
+                @foreach (var skill in _allSkills)
+                {
+                    <MudCard Elevation="14" Outlined="true" Style="width: 45%">
+                        <MudCardContent>
+                            <MudText Typo="Typo.body1">Skill Name: @skill.Name</MudText>
+                            <MudText Typo="Typo.body1">Skill Damage: @skill.Damage</MudText>
+                        </MudCardContent>
+                        <MudCardActions Class="justify-end">
+                            <MudChip Size="Size.Small" Variant="Variant.Text" Color="Color.Success" Disabled="_loadingCharacterSkills" OnClick="@(() => AddCharacterSkill(skill.Id))">Add</MudChip>
+                        </MudCardActions>
+                    </MudCard>
+                }
+            </MudContainer>
+        }
+    </DialogContent>
+</MudDialog>

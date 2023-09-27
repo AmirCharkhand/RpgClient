@@ -8,4 +8,5 @@ public interface IUriBuilderService
     public AuthenticationUriProvider Authentication { get; }
     public CharacterUriProvider Character { get; }
     public WeaponUriProvider Weapon { get; }
+    public SkillUriProvider Skill { get; }
 }

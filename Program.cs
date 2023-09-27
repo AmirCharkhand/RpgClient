@@ -22,5 +22,6 @@ builder.Services.AddScoped<ISessionStorageService, SessionStorageService>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IWeaponService, WeaponService>();
+builder.Services.AddTransient<ISkillService, SkillService>();
 
 await builder.Build().RunAsync();

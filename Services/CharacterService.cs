@@ -2,6 +2,7 @@
 using MudBlazor;
 using RPGClient.Models;
 using RPGClient.Models.Character;
+using RPGClient.Models.Skill;
 using RPGClient.Services.Contracts;
 
 namespace RPGClient.Services;
@@ -46,6 +47,24 @@ public class CharacterService : ICharacterService
         await _authenticationService.Authenticate();
         var res = await _httpClient.PostAsJsonAsync(_uriBuilder.Character.GetUriForGroupDelete, ids);
         res.EnsureSuccessStatusCode();
+    }
+
+    public async Task<List<GetSkillDto>> AddCharacterSkill(CharacterSkillDto characterSkill)
+    {
+        await _authenticationService.Authenticate();
+        var res = await _httpClient.PostAsJsonAsync(_uriBuilder.Character.GetUriForAddSkill, characterSkill);
+        res.EnsureSuccessStatusCode();
+        var result = await res.Content.ReadFromJsonAsync<List<GetSkillDto>>();
+        return result!;
+    }
+
+    public async Task<List<GetSkillDto>> RemoveCharacterSkill(CharacterSkillDto characterSkill)
+    {
+        await _authenticationService.Authenticate();
+        var res = await _httpClient.PostAsJsonAsync(_uriBuilder.Character.GetUriForRemoveSkill, characterSkill);
+        res.EnsureSuccessStatusCode();
+        var result = await res.Content.ReadFromJsonAsync<List<GetSkillDto>>();
+        return result!;
     }
 
     private async Task<TableData<GetCharacterDto>> GetTableDataFromServer(string uri)
