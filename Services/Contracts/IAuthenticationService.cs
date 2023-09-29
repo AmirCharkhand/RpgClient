@@ -6,4 +6,5 @@ public interface IAuthenticationService
 {
     Task Login(UserLoginDto userLogin);
     Task Authenticate();
+    Task Logout();
 }

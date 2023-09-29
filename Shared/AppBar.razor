@@ -1,11 +1,17 @@
 ﻿@inject IDialogService DialogService
 
 <MudAppBar>
-    <div class="d-flex justify-space-between flex-grow-1 gap-4">
-        <MudFab Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.Menu" Color="Color.Primary" OnClick="@OpenNavBar"/>
-        <div>
-            <MudButton Class="ma-3" Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.Login" Color="Color.Success" Size="Size.Small" OnClick="OpenLoginDialog">Login</MudButton>
-            <MudFab Variant="Variant.Filled" StartIcon="@ThemeIcon()" Color="Color.Primary" OnClick="@OnToggleTheme"/>
-        </div>
-    </div>
+    <MudFab Variant="Variant.Filled" StartIcon="@Icons.Material.Rounded.Menu" Color="Color.Primary" OnClick="@OpenNavBar"/>
+    <MudContainer Class="d-flex justify-end align-center gap-3 pa-0" MaxWidth="MaxWidth.False">
+        @if (_isUserLoggedIn)
+        {
+            <MudText Typo="Typo.caption">Welcome @_userName</MudText>
+            <MudChip Variant="Variant.Filled" Icon="@Icons.Material.Rounded.Logout" Color="Color.Secondary" OnClick="Logout">Logout</MudChip>
+        }
+        else
+        {
+            <MudChip Variant="Variant.Filled" Icon="@Icons.Material.Rounded.Login" Color="Color.Success" OnClick="OpenLoginDialog">Login</MudChip>
+        }
+        <MudFab Variant="Variant.Filled" StartIcon="@ThemeIcon()" Color="Color.Primary" OnClick="@OnToggleTheme"/>
+    </MudContainer>
 </MudAppBar>

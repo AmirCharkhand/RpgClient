@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using RPGClient.Components;
+using RPGClient.Extensions;
+using RPGClient.Services.Contracts;
 
 namespace RPGClient.Shared;
 
@@ -8,6 +10,11 @@ public partial class AppBar
 {
     [Parameter] public EventCallback<bool> OnThemeChanged { get; set; }
     [Parameter] public EventCallback OnNavButtonClick { get; set; }
+    [Inject] private ISessionStorageService StorageService { get; set; } = null!;
+    [Inject] private IAuthenticationService AuthenticationService { get; set; } = null!;
+
+    private string? _userName;
+    private bool _isUserLoggedIn = false;
     private bool _isDarkMode = false;
 
     private async void OnToggleTheme()
@@ -20,7 +27,12 @@ public partial class AppBar
 
     private string ThemeIcon() => _isDarkMode ? Icons.Material.Rounded.DarkMode : Icons.Material.Rounded.LightMode;
 
-    private void OpenLoginDialog()
+    protected override async Task OnInitializedAsync()
+    {
+        await SetLoginVariables();
+    }
+
+    private async void OpenLoginDialog()
     {
         var options = new DialogOptions()
         {
@@ -29,6 +41,32 @@ public partial class AppBar
             MaxWidth = MaxWidth.Small,
             FullWidth = true
         };
-        DialogService.Show<Login>("Login", options);
+        await DialogService.ShowAsync<Login>("Login", options, SetLoginVariables);
+    }
+
+    private async Task SetLoginVariables()
+    {
+        _userName = await StorageService.GetItem<string>("UserName");
+        if (_userName == null)
+        {
+            ResetLoginVariables();
+            return;
+        }
+            
+        _isUserLoggedIn = true;
+        StateHasChanged();
+    }
+
+    private void ResetLoginVariables()
+    {
+        _userName = string.Empty;
+        _isUserLoggedIn = false;
+        StateHasChanged();
+    }
+
+    private async Task Logout()
+    {
+        await AuthenticationService.Logout();
+        ResetLoginVariables();
     }
 }

@@ -49,15 +49,13 @@ public partial class Login
             var userLogin = new UserLoginDto() { UserName = _userName, Password = _password };
             await Service.Login(userLogin);
             Snackbar.Add("Successfully Logged in", Severity.Success);
+            Instance.Close();
         }
         catch (Exception e)
         {
             Snackbar.Add(e.Message, Severity.Error);
+            Instance.Cancel();
         }
-        
-        _isLoginDisabled = false;
-        _isProgressDisabled = true;
-        Instance.Close();
     }
 
     private async Task OnEnter(KeyboardEventArgs e)
