@@ -88,7 +88,6 @@ public partial class CharacterList
         var parameters = new DialogParameters()
         {
             { "CharacterName", character.Name },
-            { "OwnedSkills", character.Skills },
             { "CharacterId", character.Id }
         };
 

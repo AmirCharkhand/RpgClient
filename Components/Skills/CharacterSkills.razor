@@ -13,14 +13,14 @@
             <MudProgressLinear Class="my-3" Color="Color.Primary" Indeterminate="true" Size="Size.Medium"/>
         }
 
-        @if (OwnedSkills == null || OwnedSkills.Count == 0)
+        @if (_ownedSkills == null || _ownedSkills.Count == 0)
         {
             <MudText Typo="Typo.body1">@CharacterName Doesn't have any Skills yet.</MudText>
         }
         else
         {
             <MudContainer Class="d-flex flex-wrap gap-4 justify-center">
-                @foreach (var skill in OwnedSkills)
+                @foreach (var skill in _ownedSkills)
                 {
                     <MudCard Elevation="14" Outlined="true" Style="width: 45%">
                         <MudCardContent>
@@ -42,6 +42,11 @@
         @if (_loadingAllSkills)
         {
             <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Medium"/>
+        }
+        
+        @if (_allSkills == null || _allSkills.Count == 0)
+        {
+            <MudText Typo="Typo.body1">@CharacterName Could not found available Skills!</MudText>
         }
         else
         {

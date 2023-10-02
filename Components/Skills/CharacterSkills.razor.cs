@@ -10,14 +10,14 @@ public partial class CharacterSkills
 {
     [Parameter] public string CharacterName { get; set; } = null!;
     [Parameter] public int CharacterId { get; set; }
-    [Parameter] public List<GetSkillDto>? OwnedSkills { get; set; }
     [Inject] private ISkillService SkillService { get; set; } = null!;
     [Inject] private ICharacterService CharacterService { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
-    private List<GetSkillDto> _allSkills = new();
+    private List<GetSkillDto>? _allSkills;
+    private List<GetSkillDto>? _ownedSkills;
     private bool _loadingAllSkills = true;
-    private bool _loadingCharacterSkills = false;
+    private bool _loadingCharacterSkills = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,13 +28,25 @@ public partial class CharacterSkills
     {
         try
         {
-            _allSkills = await SkillService.GetAll();
-            _loadingAllSkills = false;
+            await GetAllSkills();
+            await GetOwnedSkills();
         }
         catch (Exception e)
         {
             Snackbar.Add(e.Message, Severity.Error);
         }
+    }
+
+    private async Task GetAllSkills()
+    {
+        _allSkills = await SkillService.GetAll();
+        _loadingAllSkills = false;
+    }
+
+    private async Task GetOwnedSkills()
+    {
+        _ownedSkills = await SkillService.GetACharacterSkills(CharacterId);
+        _loadingCharacterSkills = false;
     }
 
     private async Task AddCharacterSkill(int skillId)
@@ -44,7 +56,7 @@ public partial class CharacterSkills
         var characterSkill = new CharacterSkillDto() { CharacterId = CharacterId, SkillId = skillId };
         try
         {
-            OwnedSkills = await CharacterService.AddCharacterSkill(characterSkill);
+            _ownedSkills = await CharacterService.AddCharacterSkill(characterSkill);
         }
         catch (Exception e)
         {
@@ -61,7 +73,7 @@ public partial class CharacterSkills
         var characterSkill = new CharacterSkillDto() { CharacterId = CharacterId, SkillId = skillId };
         try
         {
-            OwnedSkills = await CharacterService.RemoveCharacterSkill(characterSkill);
+            _ownedSkills = await CharacterService.RemoveCharacterSkill(characterSkill);
         }
         catch (Exception e)
         {

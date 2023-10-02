@@ -8,4 +8,6 @@ public class SkillUriProvider
     {
         Skill = "API/Skill";
     }
+
+    public string GetUriForSkillsOfACharacter(int characterId) => $"{Skill}/Skills of {characterId}";
 }
