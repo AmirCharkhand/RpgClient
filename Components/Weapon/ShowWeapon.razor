@@ -15,10 +15,16 @@
             </MudCardContent>
         </MudCard>
     </DialogContent>
+    <DialogActions>
+        <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.Clear" OnClick="Close"/>
+    </DialogActions>
 </MudDialog>
 
 @code
 {
+    [CascadingParameter]public MudDialogInstance Instance { get; set; } = null!;
     [Parameter] public string CharacterName { get; set; } = null!;
     [Parameter] public GetWeaponDto Weapon { get; set; } = null!;
+
+    private void Close() => Instance.Close();
 }

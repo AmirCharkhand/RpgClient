@@ -8,6 +8,7 @@ namespace RPGClient.Components.Skills;
 
 public partial class CharacterSkills
 {
+    [CascadingParameter] public MudDialogInstance Instance { get; set; } = null!;
     [Parameter] public string CharacterName { get; set; } = null!;
     [Parameter] public int CharacterId { get; set; }
     [Inject] private ISkillService SkillService { get; set; } = null!;
@@ -81,4 +82,6 @@ public partial class CharacterSkills
 
         _loadingCharacterSkills = false;
     }
+
+    private void Close() => Instance.Close();
 }
