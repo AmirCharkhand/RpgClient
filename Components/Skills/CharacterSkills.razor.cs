@@ -28,8 +28,7 @@ public partial class CharacterSkills
     {
         try
         {
-            await GetAllSkills();
-            await GetOwnedSkills();
+            await Task.WhenAll(GetAllSkills(), GetOwnedSkills());
         }
         catch (Exception e)
         {
