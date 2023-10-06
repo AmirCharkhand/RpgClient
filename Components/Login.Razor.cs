@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor;
+using RPGClient.Extensions;
 using RPGClient.Models;
 using RPGClient.Services.Contracts;
 
@@ -15,12 +17,10 @@ public partial class Login
     private bool _isLoginDisabled = false;
     private bool _isProgressDisabled = true;
 
-    [Inject]
-    private IAuthenticationService Service { get; set; } = null!;
-    [Inject]
-    private ISessionStorageService SessionStorage { get; set; } = null!;
-    [Inject]
-    private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private IAuthenticationService Service { get; set; } = null!;
+    [Inject] private ISessionStorageService SessionStorage { get; set; } = null!;
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
 
 
     [CascadingParameter] public MudDialogInstance Instance { get; set; } = null!;
@@ -60,7 +60,7 @@ public partial class Login
 
     private async Task OnEnter(KeyboardEventArgs e)
     {
-        if (e.Code.Equals("Enter")) await LoginUser();
+        await e.DoFuncIfEnter(JsRuntime, LoginUser);
     }
 
     private void CloseDialog() => Instance.Cancel();

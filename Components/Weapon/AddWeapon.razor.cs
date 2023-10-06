@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor;
+using RPGClient.Extensions;
 using RPGClient.Models.Weapon;
 using RPGClient.Services.Contracts;
 
@@ -13,6 +15,7 @@ public partial class AddWeapon
     [Parameter] public int CharacterId { get; set; }
     [Inject] private IWeaponService Service { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
 
     private readonly AddWeaponDto _model = new();
     private EditContext _context = null!;
@@ -48,6 +51,6 @@ public partial class AddWeapon
 
     private async Task OnEnter(KeyboardEventArgs e)
     {
-        if (e.Code.Equals("Enter")) await Submit();
+        await e.DoFuncIfEnter(JsRuntime, Submit);
     }
 }

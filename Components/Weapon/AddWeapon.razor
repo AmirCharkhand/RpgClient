@@ -14,7 +14,7 @@
         <EditForm EditContext="_context">
             <DataAnnotationsValidator/>
             <MudTextField T="string" Variant="Variant.Text" Label="Name" HelperText="Enter A Name for the Weapon" @bind-Value="_model.Name" For="@(() => _model.Name)"/>
-            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Damage" HelperText="Enter Weapon's Damage" @bind-Value="_model.Damage" For="@(() => _model.Damage)" OnKeyDown="OnEnter" Immediate="true"/>
+            <MudNumericField HideSpinButtons="true" T="float" Variant="Variant.Text" Label="Damage" HelperText="Enter Weapon's Damage" @bind-Value="_model.Damage" For="@(() => _model.Damage)" OnKeyDown="OnEnter"/>
         </EditForm>
     </DialogContent>
     <DialogActions>

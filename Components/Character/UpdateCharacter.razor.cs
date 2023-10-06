@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor;
+using RPGClient.Extensions;
 using RPGClient.Models.Character;
 using RPGClient.Services.Contracts;
 
@@ -14,6 +16,7 @@ public partial class UpdateCharacter
     [CascadingParameter] public MudDialogInstance Instance { get; set; } = null!;
     [Inject] private ICharacterService Service { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
 
     private EditContext _context = null!;
     private bool _isSubmitDisabled = false;
@@ -47,6 +50,6 @@ public partial class UpdateCharacter
 
     private async Task OnEnter(KeyboardEventArgs e)
     {
-        if (e.Code.Equals("Enter")) await Submit();
+        await e.DoFuncIfEnter(JsRuntime, Submit);
     }
 }
