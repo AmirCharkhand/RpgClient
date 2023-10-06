@@ -43,6 +43,7 @@ public partial class Login
     {
         _isLoginDisabled = true;
         _isProgressDisabled = false;
+        StateHasChanged();
         
         try
         {
