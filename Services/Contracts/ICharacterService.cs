@@ -7,7 +7,8 @@ namespace RPGClient.Services.Contracts;
 
 public interface ICharacterService
 {
-    Task<TableData<GetCharacterDto>> GetCharacters(PagedListParameters parameters);
+    Task<TableData<GetOwnedCharacterDto>> GetOwnedCharacters(PagedListParameters parameters);
+    Task<TableData<GetUniversalCharacterDto>> GetUniversalCharacters(PagedListParameters parameters);
     Task AddCharacter(AddCharacterDto characterDto);
     Task UpdateCharacter(UpdateCharacterDto characterDto, int characterId);
     Task DeleteCharacters(List<int> ids);

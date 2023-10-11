@@ -13,7 +13,7 @@
 {
     private Toolbar _toolbar = null!;
     private CharacterList _characterList = null!;
-    private GetCharacterDto[]? _selectedCharacters;
+    private GetOwnedCharacterDto[]? _selectedCharacters;
     private readonly DialogOptions _options = new()
     {
         CloseOnEscapeKey = true,
@@ -22,7 +22,7 @@
         FullWidth = true
     };
 
-    private void ChangeSelectedCharactersArray(GetCharacterDto[] selectedCharacters)
+    private void ChangeSelectedCharactersArray(GetOwnedCharacterDto[] selectedCharacters)
     {
         _selectedCharacters = selectedCharacters;
         ChangeToolbarState(_selectedCharacters.Length);

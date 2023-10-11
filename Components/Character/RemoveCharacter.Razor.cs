@@ -7,7 +7,7 @@ namespace RPGClient.Components.Character;
 
 public partial class RemoveCharacter
 {
-    [Parameter] public GetCharacterDto[] Characters { get; set; } = null!;
+    [Parameter] public GetOwnedCharacterDto[] Characters { get; set; } = null!;
     [CascadingParameter] public MudDialogInstance Instance { get; set; } = null!;
     [Inject] public ISnackbar Snackbar { get; set; } = null!;
     [Inject] public ICharacterService Service { get; set; } = null!;

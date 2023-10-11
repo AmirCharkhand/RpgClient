@@ -20,13 +20,20 @@ public class CharacterService : ICharacterService
         _authenticationService = authenticationService;
     }
     
-    public async Task<TableData<GetCharacterDto>> GetCharacters(PagedListParameters parameters)
+    public async Task<TableData<GetOwnedCharacterDto>> GetOwnedCharacters(PagedListParameters parameters)
     {
         await _authenticationService.Authenticate();
-        var uri = _uriBuilder.Character.GetUriForPagedCharacters(parameters);
-        return await GetTableDataFromServer(uri);
+        var uri = _uriBuilder.Character.GetUriForOwnedCharacters(parameters);
+        return await GetTableDataFromServer<GetOwnedCharacterDto>(uri);
     }
-    
+
+    public async Task<TableData<GetUniversalCharacterDto>> GetUniversalCharacters(PagedListParameters parameters)
+    {
+        await _authenticationService.Authenticate();
+        var uri = _uriBuilder.Character.GetUriForUniversalCharacters(parameters);
+        return await GetTableDataFromServer<GetUniversalCharacterDto>(uri);
+    }
+
     public async Task AddCharacter(AddCharacterDto characterDto)
     {
         await _authenticationService.Authenticate();
@@ -67,14 +74,14 @@ public class CharacterService : ICharacterService
         return result!;
     }
 
-    private async Task<TableData<GetCharacterDto>> GetTableDataFromServer(string uri)
+    private async Task<TableData<T>> GetTableDataFromServer<T>(string uri)
     {
         var req = new HttpRequestMessage(HttpMethod.Get, uri);
         var res = await _httpClient.SendAsync(req);
         res.EnsureSuccessStatusCode();
-        var characters = await res.Content.ReadFromJsonAsync<List<GetCharacterDto>>();
+        var characters = await res.Content.ReadFromJsonAsync<List<T>>();
         var totalItems = int.Parse(res.Headers.GetValues("X_TotalCount").First());
-        return new TableData<GetCharacterDto>
+        return new TableData<T>
         {
             Items = characters,
             TotalItems = totalItems

@@ -14,7 +14,7 @@ namespace RPGClient.Components.Character;
 public partial class CharacterList
 {
     private string _searchText = string.Empty;
-    private MudTable<GetCharacterDto> _table = null!;
+    private MudTable<GetOwnedCharacterDto> _table = null!;
     private DialogOptions _options = new ()
     {
         CloseOnEscapeKey = true,
@@ -25,9 +25,9 @@ public partial class CharacterList
     [Inject] private ICharacterService Service { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
-    [Parameter] public EventCallback<GetCharacterDto[]> OnSelectedRowsChanged { get; set; }
+    [Parameter] public EventCallback<GetOwnedCharacterDto[]> OnSelectedRowsChanged { get; set; }
 
-    private async Task<TableData<GetCharacterDto>> GetServerData(TableState state)
+    private async Task<TableData<GetOwnedCharacterDto>> GetServerData(TableState state)
     {
         var pagedListParameters = new PagedListParameters()
         {
@@ -38,15 +38,15 @@ public partial class CharacterList
             PageSize = state.PageSize
         };
         
-        TableData<GetCharacterDto> tableData;
+        TableData<GetOwnedCharacterDto> tableData;
         try
         {
-            tableData = await Service.GetCharacters(pagedListParameters);
+            tableData = await Service.GetOwnedCharacters(pagedListParameters);
         }
         catch (Exception e)
         {
             Snackbar.Add(e.Message, Severity.Warning);
-            tableData = new TableData<GetCharacterDto>() { TotalItems = 0 };
+            tableData = new TableData<GetOwnedCharacterDto>() { TotalItems = 0 };
         }
 
         return tableData;
@@ -58,7 +58,7 @@ public partial class CharacterList
         await _table.ReloadServerData();
     }
 
-    private async void OnSelectedItemsChanged(HashSet<GetCharacterDto> selectedItems)
+    private async void OnSelectedItemsChanged(HashSet<GetOwnedCharacterDto> selectedItems)
     {
         var selectedItemsList = selectedItems.ToArray();
         await OnSelectedRowsChanged.InvokeAsync(selectedItemsList);
@@ -66,29 +66,29 @@ public partial class CharacterList
 
     public async Task ReloadTable() => await _table.ReloadServerData();
 
-    private async Task ShowWeaponDetails(GetCharacterDto character)
+    private async Task ShowWeaponDetails(GetOwnedCharacterDto ownedCharacter)
     {
         var parameters = new DialogParameters()
         {
-            { "CharacterName", character.Name },
-            { "Weapon", character.Weapon }
+            { "CharacterName", ownedCharacter.Name },
+            { "Weapon", ownedCharacter.Weapon }
         };
 
         await DialogService.ShowAsync<ShowWeapon>("Weapon", parameters, _options);
     }
 
-    private async Task AddNewWeapon(GetCharacterDto character)
+    private async Task AddNewWeapon(GetOwnedCharacterDto ownedCharacter)
     {
-        var parameters = new DialogParameters() { { "CharacterId", character.Id } };
+        var parameters = new DialogParameters() { { "CharacterId", ownedCharacter.Id } };
         await DialogService.ShowAsync<AddWeapon>("Add new Weapon", parameters, _options, () => _table.ReloadServerData());
     }
 
-    private async Task ShowSkills(GetCharacterDto character)
+    private async Task ShowSkills(GetOwnedCharacterDto ownedCharacter)
     {
         var parameters = new DialogParameters()
         {
-            { "CharacterName", character.Name },
-            { "CharacterId", character.Id }
+            { "CharacterName", ownedCharacter.Name },
+            { "CharacterId", ownedCharacter.Id }
         };
 
         await DialogService.ShowAsync<CharacterSkills>("Skills", parameters, _options);

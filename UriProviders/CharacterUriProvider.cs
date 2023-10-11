@@ -16,18 +16,23 @@ public class CharacterUriProvider
     public string GetUriForAddSkill => Character + "/AddSkill";
     public string GetUriForRemoveSkill => Character + "/RemoveSkill";
 
-    public string GetUriForPagedCharacters(PagedListParameters parameters)
+    public string GetUriForOwnedCharacters(PagedListParameters parameters) =>
+        GetUriForPagedCharacters(parameters, Character);
+
+    public string GetUriForUniversalCharacters(PagedListParameters parameters) =>
+        GetUriForPagedCharacters(parameters, Character + "/Universal");
+
+    private string GetUriForPagedCharacters(PagedListParameters parameters, string baseUri)
     {
-        var uri = Character;
         if (!string.IsNullOrEmpty(parameters.SearchText))
-            uri += $"/{parameters.SearchText}";
+            baseUri += $"/{parameters.SearchText}";
         
-        uri += $"?PageIndex={parameters.PageIndex}&PageSize={parameters.PageSize}";
+        baseUri += $"?PageIndex={parameters.PageIndex}&PageSize={parameters.PageSize}";
         
         if (!string.IsNullOrEmpty(parameters.SortingPropName))
-            uri += $"&PropertyName={parameters.SortingPropName}&Ascending={parameters.Ascending}";
+            baseUri += $"&PropertyName={parameters.SortingPropName}&Ascending={parameters.Ascending}";
         
-        return uri;
+        return baseUri;
     }
 
     public string GetUriForUpdate(int characterId)

@@ -2,7 +2,7 @@
 
 namespace RPGClient.Models.Character;
 
-public class GetCharacterDto
+public class GetOwnedCharacterDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
