@@ -1,0 +1,80 @@
+﻿@using RPGClient.Models.Character
+
+<MudTable T="GetUniversalCharacterDto" @ref="_table" ServerData="GetServerData" Dense="true" Hover="true" Outlined="true" FixedHeader="true" FixedFooter="true" Elevation="14" SelectedItemChanged="OnRowClick">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Characters List</MudText>
+        <MudSpacer/>
+        <MudTextField T="string" ValueChanged="OnSearch" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Id">ID</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Name">Name</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Health">Health</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Strength">Strength</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Attack">Attack</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Defence">Defence</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Type">Type</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Fights">Fights</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Victories">Victories</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">
+            <MudTableSortLabel T="GetUniversalCharacterDto" SortLabel="Defeats">Defeats</MudTableSortLabel>
+        </MudTh>
+        <MudTh Style="text-align: center">Weapon</MudTh>
+        <MudTh Style="text-align: center">Skills</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id" Style="text-align: center">@context.Id</MudTd>
+        @if (context.Owned)
+        {
+            <MudTd DataLabel="Name" Style="text-align: center">
+                <MudIcon Icon="@Icons.Material.Rounded.PersonPin" Size="Size.Small"/> @context.Name
+            </MudTd>
+        }
+        else
+        {
+            <MudTd DataLabel="Name" Style="text-align: center">@context.Name</MudTd>
+        }
+        <MudTd DataLabel="Health" Style="text-align: center">@context.Health</MudTd>
+        <MudTd DataLabel="Strength" Style="text-align: center">@context.Strength</MudTd>
+        <MudTd DataLabel="Attack" Style="text-align: center">@context.Attack</MudTd>
+        <MudTd DataLabel="Defence" Style="text-align: center">@context.Defence</MudTd>
+        <MudTd DataLabel="Type" Style="text-align: center">@context.Type</MudTd>
+        <MudTd DataLabel="Fights" Style="text-align: center">@context.Fights</MudTd>
+        <MudTd DataLabel="Victories" Style="text-align: center">@context.Victories</MudTd>
+        <MudTd DataLabel="Defeats" Style="text-align: center">@context.Defeats</MudTd>
+        <MudTd DataLabel="Weapon" Style="text-align: center">
+            @if (context.Weapon != null)
+            {
+                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => ShowWeaponDetails(context))">@context.Weapon.Name</MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Text" Color="Color.Tertiary" OnClick="@(() => AddNewWeapon(context))">Add a Weapon</MudButton>
+            }
+        </MudTd>
+        <MudTd DataLabel="Skills">
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => ShowSkills(context))">Skills</MudButton>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="@(new[] { 12, 32, 64 })" RowsPerPageString="Characters per Page"/>
+    </PagerContent>
+</MudTable>

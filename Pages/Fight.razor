@@ -1,0 +1,61 @@
+﻿@using RPGClient.Components.Character
+@using RPGClient.Components.Fight
+@using RPGClient.Models.Character
+@page "/Fight"
+
+<MudContainer Fixed="true" Class="d-flex flex-column align-center gap-2 mb-2">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" IconSize="Size.Large" StartIcon="@Icons.Material.TwoTone.PlayArrow" OnClick="StartFight">Start Fight</MudButton>
+    <MudChipSet AllClosable="true" OnClose="RemoveCharacter">
+        @foreach (var character in _selectedCharacters)
+        {
+            <MudChip Text="@character.Name" Value="character"></MudChip>
+        }
+    </MudChipSet>
+</MudContainer>
+<UniversalCharacterList OnSelectedRowChange="AddCharacter"/>
+
+@code {
+    [Inject]private IDialogService DialogService { get; set; } = null!;
+    [Inject]private ISnackbar Snackbar { get; set; } = null!;
+    
+    private readonly List<GetUniversalCharacterDto> _selectedCharacters = new();
+
+    private void RemoveCharacter(MudChip chip) => _selectedCharacters.Remove((chip.Value as GetUniversalCharacterDto)!);
+
+    private void AddCharacter(GetUniversalCharacterDto character)
+    {
+        if (_selectedCharacters.Count > 7)
+        {
+            Snackbar.Add("Maximum of Characters for each Fight is 7", Severity.Warning);
+            return;
+        }
+        if (_selectedCharacters.Exists(c => c.Id == character.Id))
+        {
+            Snackbar.Add($"{character.Name} is already Enlisted, Choose another Character", Severity.Warning);
+            return;
+        }
+        _selectedCharacters.Add(character);
+    }
+
+    private async Task StartFight()
+    {
+        if (_selectedCharacters.Count < 2)
+        {
+            Snackbar.Add("You Need to Select at least 2 Characters to Start a Fight.", Severity.Warning);
+            return;
+        }
+        
+        var options = new DialogOptions()
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium
+        };
+        
+        var parameters = new DialogParameters()
+        {
+            { "Ids", _selectedCharacters.Select(c => c.Id).ToList() }
+        };
+
+        await DialogService.ShowAsync<ShowFightResult>("Fight", parameters, options);
+    }
+}

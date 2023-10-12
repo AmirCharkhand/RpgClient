@@ -7,12 +7,12 @@
 <MudContainer Fixed="true" Class="d-flex justify-center mb-2">
     <Toolbar @ref="_toolbar" OnAddBtnClicked="AddNewCharacter" OnEditBtnClicked="UpdateCharacter" OnRemoveBtnClicked="DeleteCharacters"/>
 </MudContainer>
-<CharacterList @ref="_characterList" OnSelectedRowsChanged="ChangeSelectedCharactersArray"/>
+<OwnedCharacterList @ref="_characterList" OnSelectedRowsChanged="ChangeSelectedCharactersArray"/>
 
 @code
 {
     private Toolbar _toolbar = null!;
-    private CharacterList _characterList = null!;
+    private OwnedCharacterList _characterList = null!;
     private GetOwnedCharacterDto[]? _selectedCharacters;
     private readonly DialogOptions _options = new()
     {
