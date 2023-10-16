@@ -63,15 +63,33 @@
         <MudTd DataLabel="Weapon" Style="text-align: center">
             @if (context.Weapon != null)
             {
-                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => ShowWeaponDetails(context))">@context.Weapon.Name</MudButton>
+                _weaponsHover.TryAdd(context.Id, false);
+                <MudButton Variant="Variant.Text" Color="Color.Primary" @onmouseover="@(() => OnWeaponMouseOver(context.Id))" @onmouseout="@(() => OnWeaponMouseOut(context.Id))">
+                    @if (_weaponsHover[context.Id])
+                    {
+                        <MudPopover Open="true" Paper="false" AnchorOrigin="Origin.CenterLeft" TransformOrigin="Origin.CenterRight" OverflowBehavior="OverflowBehavior.FlipOnOpen">
+                            <SyncPopupList MarkupStrings="CreateMarkupForWeapon(context.Weapon)"></SyncPopupList>
+                        </MudPopover>
+                    }
+                    Weapon
+                </MudButton>
             }
             else
             {
-                <MudButton Variant="Variant.Text" Color="Color.Tertiary" OnClick="@(() => AddNewWeapon(context))">Add a Weapon</MudButton>
+                <MudText Color="Color.Error" Typo="Typo.body1">No Weapon!</MudText>
             }
         </MudTd>
         <MudTd DataLabel="Skills">
-            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => ShowSkills(context))">Skills</MudButton>
+            @{ _skillsHover.TryAdd(context.Id, false);}
+            <MudButton Variant="Variant.Text" Color="Color.Primary" @onmouseover="@(() => OnSkillMouseOver(context.Id))" @onmouseout="@(() => OnSkillMouseOut(context.Id))">
+                @if (_skillsHover[context.Id])
+                {
+                    <MudPopover Open="true" Paper="false" AnchorOrigin="Origin.CenterLeft" TransformOrigin="Origin.CenterRight" OverflowBehavior="OverflowBehavior.FlipOnOpen">
+                        <AsyncPopupList MarkupStrings="@(() => CreateMarkupForSkills(context))"/>
+                    </MudPopover>
+                }
+                Skills
+            </MudButton>
         </MudTd>
     </RowTemplate>
     <PagerContent>

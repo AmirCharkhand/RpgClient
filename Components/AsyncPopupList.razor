@@ -1,0 +1,37 @@
+﻿<MudPaper Elevation="14" MaxHeight="500" MaxWidth="230" Class="pa-4">
+    @if (_isLoading)
+    {
+        <MudProgressCircular Indeterminate="true" Class="align-self-center"/>
+    }
+    else if (_markupStrings == null)
+    {
+        <MudText Typo="Typo.body1">Something went wrong Couldn't Load the data</MudText>
+    }
+    else
+    {
+        foreach (var markupString in _markupStrings)
+        {
+            <MudText Typo="Typo.body2" Class="mb-1">@markupString</MudText>
+        }
+    }
+</MudPaper>
+
+@code 
+{
+    [Parameter] public Func<Task<List<MarkupString>>>? MarkupStrings { get; set; }
+
+    private bool _isLoading = true;
+    private List<MarkupString>? _markupStrings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMarkupStrings();
+    }
+
+    private async Task LoadMarkupStrings()
+    {
+        if (MarkupStrings == null) throw new NullReferenceException();
+        _markupStrings = await MarkupStrings.Invoke();
+        _isLoading = false;
+    }
+}

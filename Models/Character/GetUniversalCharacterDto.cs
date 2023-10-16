@@ -1,4 +1,5 @@
-﻿using RPGClient.Models.Weapon;
+﻿using RPGClient.Models.Skill;
+using RPGClient.Models.Weapon;
 
 namespace RPGClient.Models.Character;
 
@@ -16,5 +17,6 @@ public class GetUniversalCharacterDto
     public int Victories { get; set; }
     public int Defeats { get; set; }
     public GetWeaponDto? Weapon { get; set; }
+    public List<GetSkillDto>? Skills { get; set; }
 
 }

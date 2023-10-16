@@ -1,5 +1,6 @@
 ﻿@using RPGClient.Components.Character
 @using RPGClient.Components.Fight
+@using RPGClient.Extensions
 @using RPGClient.Models.Character
 @page "/Fight"
 
@@ -12,13 +13,14 @@
         }
     </MudChipSet>
 </MudContainer>
-<UniversalCharacterList OnSelectedRowChange="AddCharacter"/>
+<UniversalCharacterList @ref="@_universalCharacters" OnSelectedRowChange="AddCharacter"/>
 
 @code {
     [Inject]private IDialogService DialogService { get; set; } = null!;
     [Inject]private ISnackbar Snackbar { get; set; } = null!;
     
     private readonly List<GetUniversalCharacterDto> _selectedCharacters = new();
+    private UniversalCharacterList _universalCharacters = null!;
 
     private void RemoveCharacter(MudChip chip) => _selectedCharacters.Remove((chip.Value as GetUniversalCharacterDto)!);
 
@@ -44,18 +46,23 @@
             Snackbar.Add("You Need to Select at least 2 Characters to Start a Fight.", Severity.Warning);
             return;
         }
-        
+
         var options = new DialogOptions()
         {
             CloseOnEscapeKey = true,
             MaxWidth = MaxWidth.Medium
         };
-        
+
         var parameters = new DialogParameters()
         {
             { "Ids", _selectedCharacters.Select(c => c.Id).ToList() }
         };
 
-        await DialogService.ShowAsync<ShowFightResult>("Fight", parameters, options);
+        await DialogService.ShowAsync<ShowFightResult>("Fight", parameters, options,
+            () =>
+            {
+                var resetSelected = Task.Run(() => _selectedCharacters.Clear());
+                return Task.WhenAll(resetSelected, _universalCharacters.Reload());
+            });
     }
 }

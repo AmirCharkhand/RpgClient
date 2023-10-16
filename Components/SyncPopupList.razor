@@ -1,0 +1,18 @@
+﻿<MudPaper Elevation="14" MaxHeight="500" MaxWidth="230" Class="pa-4">
+    @if (MarkupStrings == null)
+    {
+        <MudText Typo="Typo.body1">Something went wrong Couldn't Load the data</MudText>
+    }
+    else
+    {
+        foreach (var markupString in MarkupStrings)
+        {
+            <MudText Typo="Typo.body2" Class="mb-1">@markupString</MudText>
+        }
+    }
+</MudPaper>
+
+@code
+{
+    [Parameter] public List<MarkupString>? MarkupStrings { get; set; }
+}
